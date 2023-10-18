@@ -1,12 +1,7 @@
 import CommonExpensesDebt from "@/components/commonExpensesDebt/CommonExpensesDebt";
 import { prisma } from "@/lib/prisma";
 import { Container } from "@mui/material";
-import {
-  DataGrid,
-  GridColDef,
-  GridRowsProp,
-  GridValueGetterParams,
-} from "@mui/x-data-grid";
+import { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 
 export const revalidate: number = 10;
 
@@ -15,6 +10,7 @@ export default async function CommonExpensesDebtYearPage({
 }: {
   params: { year: number };
 }) {
+  console.log("params", params);
   const apartments = await prisma.apartment.findMany({
     include: {
       commonExpensesDebt: true,
@@ -30,11 +26,13 @@ export default async function CommonExpensesDebtYearPage({
       ),
     0,
   );
+  console.log("totalDebt", totalDebt);
 
   const totalQuota = apartments.reduce(
     (amount, apartment) => amount + apartment.commonExpensesDebt[0].debtAmount!,
     0,
   );
+  console.log("totalQuota", totalQuota);
 
   const columns: GridColDef[] = [
     {

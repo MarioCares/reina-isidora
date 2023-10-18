@@ -21,6 +21,7 @@ export default async function CommonExpensesYearlyPage({
   } else {
     const apartments: TcommonExpensesByYear[] =
       await CommonExpenses.getCommonExpensesByYear(params.year);
+    console.log("apartments", apartments);
 
     return (
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

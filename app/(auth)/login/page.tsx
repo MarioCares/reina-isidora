@@ -125,7 +125,7 @@ const LoginPage = (): ReactElement => {
                 <Link href="#">Olvidé mi contraseña</Link>
               </Grid>
               <Grid item>
-                <Link href="/register">Crear cuenta</Link>
+                <Link href={"/register"}>Crear cuenta</Link>
               </Grid>
             </Grid>
             <Copyright />

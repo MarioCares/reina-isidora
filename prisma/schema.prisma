@@ -10,20 +10,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Apartment {
+  id                 Int                  @id @default(autoincrement())
+  number             Int
+  prorating          Decimal              @default(0) @db.Decimal(10, 9)
+  owners             User[]
+  commonExpenses     CommonExpenses[]
+  commonExpensesDebt CommonExpensesDebt[]
+
+  @@map("apartments")
+}
+
 model User {
-  id            String    @id @default(uuid())
-  name          String
-  email         String?   @unique
-  password      String?
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  role          Role      @default(USER)
-  accounts      Account[]
-  sessions      Session[]
+  id             String           @id @default(uuid())
+  name           String
+  email          String?          @unique
+  password       String?
+  emailVerified  DateTime?        @map("email_verified")
+  image          String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  role           Role             @default(USER)
+  accounts       Account[]
+  sessions       Session[]
+  apartmentId    Int?
+  apartment      Apartment?       @relation(fields: [apartmentId], references: [id])
+  commonExpenses CommonExpenses[]
 
   @@map("users")
+}
+
+model CommonExpenses {
+  id             Int         @id @default(autoincrement())
+  paymentAt      DateTime
+  apartmentId    Int
+  apartment      Apartment   @relation(fields: [apartmentId], references: [id])
+  payBy          String
+  referenceMonth DateTime    @db.Date
+  paymentAmount  Int
+  paymentType    PaymentType @default(EFECTIVO)
+  bank           String
+  registerById   String
+  registerBy     User        @relation(fields: [registerById], references: [id])
+  documentUrl    String?
+  receipt        Int?
+  observation    String?
+  checkNumber    String?
+
+  @@map("common_expenses")
+}
+
+model CommonExpensesDebt {
+  id          Int       @id @default(autoincrement())
+  apartmentId Int
+  apartment   Apartment @relation(fields: [apartmentId], references: [id])
+  year        Int
+  month       Int
+  debtAmount  Int?
+
+  @@map("common_expenses_debt")
 }
 
 model Account {
@@ -74,4 +119,10 @@ enum Role {
   ADMIN
   USER
   OWNER
+}
+
+enum PaymentType {
+  EFECTIVO
+  CHEQUE
+  TRANSFERENCIA
 }

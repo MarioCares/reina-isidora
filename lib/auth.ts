@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
+          role: user.role,
           randomKey: "cruzverde",
         };
       },
@@ -55,16 +56,22 @@ export const authOptions: NextAuthOptions = {
           ...session.user,
           id: token.id,
           randomKey: token.randomKey,
+          role: token.role,
         },
       };
     },
     jwt: ({ token, user }) => {
       if (user) {
-        const u = user as unknown as { id: number; randomKey: string };
+        const u = user as unknown as {
+          id: number;
+          randomKey: string;
+          role: string;
+        };
         return {
           ...token,
           id: u.id,
           randomKey: u.randomKey,
+          role: u.role,
         };
       }
       return token;

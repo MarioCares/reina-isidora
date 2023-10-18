@@ -8,7 +8,6 @@ import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -16,15 +15,15 @@ import {
   AppBarStyled,
   DrawerStyled,
 } from "@/components/dashboard/styles/DashboardStyled";
-import {
-  mainListItems,
-  secondaryListItems,
-} from "@/components/dashboard/ListItems";
+import { usePathname } from "next/navigation";
+import { getPagenameByPath } from "@/utils/Pages";
+import { MenuItems } from "@/components/dashboard/MenuItems";
 
 const AppBarDrawer = ({ showBackdrop }: { showBackdrop: () => void }) => {
   const settings = ["Profile", "Account", "Dashboard"];
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState<boolean>(false);
+  const pathname = usePathname();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -63,7 +62,17 @@ const AppBarDrawer = ({ showBackdrop }: { showBackdrop: () => void }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Box sx={{ flexGrow: 1 }}></Box>
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              {getPagenameByPath(pathname)}
+            </Typography>
+          </Box>
           <Box sx={{ display: "flex", gap: "16px" }}>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -117,11 +126,7 @@ const AppBarDrawer = ({ showBackdrop }: { showBackdrop: () => void }) => {
           </IconButton>
         </Toolbar>
         <Divider />
-        <List component="nav">
-          {mainListItems}
-          <Divider sx={{ my: 1 }} />
-          {secondaryListItems}
-        </List>
+        <MenuItems />
       </DrawerStyled>
     </>
   );

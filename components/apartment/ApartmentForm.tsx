@@ -39,7 +39,7 @@ const ApartmentForm = ({ apartment }: { apartment: IApartmentFormProps }) => {
           const errors: Partial<ErrorValues> = {};
           if (!values.number) {
             errors.number = "Requerido";
-          } else if (values.number <= 0 || values.number >= 215) {
+          } else if (values.number <= 0 || values.number >= 216) {
             errors.number = "Número departamento incorrecto";
           }
           if (!values.prorating) {

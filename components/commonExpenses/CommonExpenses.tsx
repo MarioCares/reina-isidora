@@ -24,7 +24,6 @@ import { PaymentType } from "@prisma/client";
 import useSaveCommonExpense from "@/hooks/useSaveCommonExpense";
 import Box from "@mui/material/Box";
 import useGetUsers from "@/hooks/useGetUsers";
-import ListItemText from "@mui/material/ListItemText";
 import Link from "next/link";
 
 type TCommonExpensesProps = {

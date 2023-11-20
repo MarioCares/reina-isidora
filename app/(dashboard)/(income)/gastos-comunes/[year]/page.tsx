@@ -7,7 +7,6 @@ import {
   TcommonExpensesByYear,
 } from "@/utils/constants/querys/CommonExpenses";
 import CommonExpensesGrid from "@/components/income/commonExpenses/CommonExpensesGrid";
-import { prisma } from "@/lib/prisma";
 
 export const revalidate: number = 0;
 

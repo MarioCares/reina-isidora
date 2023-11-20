@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getErrorMessage } from "@/utils/Errors";
 import { prisma } from "@/lib/prisma";
-import { common } from "@mui/material/colors";
 
 export async function POST(req: Request) {
   try {

@@ -1,10 +1,8 @@
-import {
-  ICommonExpenseDebt,
-  IUseSaveCommonExpenseDebtStart,
-} from "@/interfaces/model/SaveCommonExpensesDebt";
+import { ICommonExpenseDebt } from "@/interfaces/model/SaveCommonExpensesDebt";
 import { useState } from "react";
 import { CommonExpensesDebtService } from "@/services/CommonExpensesDebtService";
 import { getErrorMessage } from "@/utils/Errors";
+import { IUseSaveCommonExpenseDebtStart } from "@/interfaces/props/IUseSaveCommonExpenseDebtStart";
 
 const useSaveCommonExpenseDebtStart = (): IUseSaveCommonExpenseDebtStart => {
   const [

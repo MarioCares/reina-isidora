@@ -1,4 +1,3 @@
-import { ORDINAL_MONTHS } from "@/utils/constants/general/months";
 import { prisma } from "@/lib/prisma";
 
 export type TcommonExpensesByYear = {
@@ -7,50 +6,40 @@ export type TcommonExpensesByYear = {
 
 const getCommonExpensesByYear = async (
   year: number,
-): Promise<TcommonExpensesByYear[]> => {
-  const months = ORDINAL_MONTHS.map(
-    (item) => `${year}-${item.padStart(2, "0")}`,
-  );
-  return prisma.$queryRaw`SELECT a."number",
-(SELECT SUM(c."paymentAmount") 
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[0]} ) AS enero,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[1]} ) AS febrero,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[2]} ) AS marzo,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[3]} ) AS abril,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[4]} ) AS mayo,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[5]} ) AS junio,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[6]} ) AS julio,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[7]} ) AS agosto,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[8]} ) AS septiembre,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[9]} ) AS octubre,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[10]} ) AS noviembre,
- (SELECT SUM(c."paymentAmount")
- FROM "common_expenses" AS c 
- WHERE c."apartmentId" = a.id AND to_char(c."referenceMonth",'YYYY-MM') = ${months[11]} ) AS diciembre
-FROM "apartments" AS a`;
-};
+): Promise<TcommonExpensesByYear[]> =>
+  prisma.$queryRaw`SELECT
+  a."number",
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-01`} THEN c."paymentAmount" ELSE 0 END) AS enero,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-02`} THEN c."paymentAmount" ELSE 0 END) AS febrero,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-03`} THEN c."paymentAmount" ELSE 0 END) AS marzo,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-04`} THEN c."paymentAmount" ELSE 0 END) AS abril,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-05`} THEN c."paymentAmount" ELSE 0 END) AS mayo,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-06`} THEN c."paymentAmount" ELSE 0 END) AS junio,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-07`} THEN c."paymentAmount" ELSE 0 END) AS julio,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-08`} THEN c."paymentAmount" ELSE 0 END) AS agosto,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-09`} THEN c."paymentAmount" ELSE 0 END) AS septiembre,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-10`} THEN c."paymentAmount" ELSE 0 END) AS octubre,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-11`} THEN c."paymentAmount" ELSE 0 END) AS noviembre,
+  SUM(CASE WHEN to_char(c."referenceMonth",'YYYY-MM') = ${`${year}-12`} THEN c."paymentAmount" ELSE 0 END) AS diciembre
+FROM
+  "apartments" AS a
+LEFT JOIN
+  "common_expenses" AS c ON a.id = c."apartmentId"
+GROUP BY
+  a."number"
+ORDER BY a."number";`;
+
+const getCommonExpensesDebtByYear = async (
+  year: number,
+): Promise<{ [key: string]: number }[]> =>
+  prisma.$queryRaw`SELECT a.number, SUM(ced."debtAmount") AS total
+FROM common_expenses_debt AS ced
+INNER JOIN apartments AS a ON a.id = ced."apartmentId"
+WHERE ced.year = ${year}
+GROUP BY ced."apartmentId", a.number
+ORDER BY ced."apartmentId"`;
 
 export const CommonExpenses = {
   getCommonExpensesByYear,
+  getCommonExpensesDebtByYear,
 };

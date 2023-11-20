@@ -17,15 +17,18 @@ import {
   validate,
 } from "@/components/commonExpensesDebt/CommonExpensesDebtStartValidate";
 import { useRouter } from "next/navigation";
+import { IDebt } from "@/interfaces/model/IDebt";
 
 interface ICommonExpensesDebtStartProps {
   year: number;
   number: number;
+  debt?: IDebt[];
 }
 
 const CommonExpensesDebtStart = ({
   year,
   number,
+  debt,
 }: ICommonExpensesDebtStartProps) => {
   const {
     isLoadingSaveCommonExpenseDebtStart,
@@ -35,11 +38,14 @@ const CommonExpensesDebtStart = ({
   const router = useRouter();
 
   const handleSubmit = (values: IMonthsObject) => {
-    handleSaveCommonExpenseDebtStart({
-      number,
-      year,
-      detail: convertToICommonExpenseDebtDetail(values),
-    });
+    handleSaveCommonExpenseDebtStart(
+      {
+        number,
+        year,
+        detail: convertToICommonExpenseDebtDetail(values),
+      },
+      debt === undefined,
+    );
   };
 
   return (
@@ -63,7 +69,7 @@ const CommonExpensesDebtStart = ({
         </Box>
       )}
       <Formik
-        initialValues={VALUES_MONTH}
+        initialValues={VALUES_MONTH(debt)}
         validate={validate}
         onSubmit={handleSubmit}
       >

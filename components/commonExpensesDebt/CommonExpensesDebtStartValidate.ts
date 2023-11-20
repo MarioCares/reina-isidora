@@ -4,7 +4,7 @@ import {
   MONTHS,
   MONTHS2NUMBER,
 } from "@/utils/constants/general/months";
-import { ICommonExpenseDebtDetail } from "@/interfaces/SaveCommonExpensesDebt";
+import { ICommonExpenseDebtDetail } from "@/interfaces/model/SaveCommonExpensesDebt";
 
 export const validate = (values: IMonthsObject) => {
   const errors: Partial<IMonthsObjectDetail> = {};

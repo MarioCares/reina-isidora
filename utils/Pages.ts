@@ -2,8 +2,13 @@ export const getPagenameByPath = (path: string): string => {
   if (path === "/") return "Escritorio";
   if (path.includes("/gastos-comunes")) {
     const part = path.split("/");
-    if (!isNaN(Number(part[2])) && part.length === 3)
-      return `Gastos Comunes Año ${part[2]}`;
+    if (!isNaN(Number(part[2]))) {
+      if (part.length === 3) return `Gastos Comunes Año ${part[2]}`;
+      if (part.length === 4)
+        return `Gastos Comunes Año ${part[2]} Departamento ${part[3]}`;
+      if (part.length === 5)
+        return `Gastos Comunes Año ${part[2]} Departamento ${part[3]} Mes ${part[4]}`;
+    }
   }
   if (path.includes("/deuda-gastos-comunes")) {
     const part = path.split("/");

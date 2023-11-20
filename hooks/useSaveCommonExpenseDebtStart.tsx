@@ -1,7 +1,7 @@
 import {
   ICommonExpenseDebt,
   IUseSaveCommonExpenseDebtStart,
-} from "@/interfaces/SaveCommonExpensesDebt";
+} from "@/interfaces/model/SaveCommonExpensesDebt";
 import { useState } from "react";
 import { CommonExpensesDebtService } from "@/services/CommonExpensesDebtService";
 import { getErrorMessage } from "@/utils/Errors";
@@ -16,9 +16,12 @@ const useSaveCommonExpenseDebtStart = (): IUseSaveCommonExpenseDebtStart => {
     setStatusSaveCommonExpenseDebtStart,
   ] = useState<string | null>(null);
 
-  const handleSaveCommonExpenseDebtStart = async (data: ICommonExpenseDebt) => {
+  const handleSaveCommonExpenseDebtStart = async (
+    data: ICommonExpenseDebt,
+    isNew: boolean,
+  ) => {
     setIsLoadingSaveCommonExpenseDebtStart(true);
-    CommonExpensesDebtService.Save(data)
+    CommonExpensesDebtService.Save(data, isNew)
       .then(() => setStatusSaveCommonExpenseDebtStart("ok"))
       .catch((error) => {
         console.log("Error en CommonExpensesDebtSave", error);

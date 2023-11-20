@@ -10,7 +10,7 @@ import Link from "next/link";
 import List from "@mui/material/List";
 import { AdministratorMenu } from "@/components/dashboard/MenuItems/AdministratorMenu";
 
-export const MenuItems = () => {
+export const MenuItems = ({ role }: { role?: string }) => {
   return (
     <List component={"nav"}>
       <ListItemButton>
@@ -25,7 +25,7 @@ export const MenuItems = () => {
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
-        <Link href={"/gastos-comunes"}>
+        <Link href={`/gastos-comunes/${new Date().getFullYear()}`}>
           <ListItemText primary="Gastos Comunes" />
         </Link>
       </ListItemButton>
@@ -47,7 +47,7 @@ export const MenuItems = () => {
         </ListItemIcon>
         <ListItemText primary="Integrations" />
       </ListItemButton>
-      <AdministratorMenu />
+      {role === "ADMIN" && <AdministratorMenu />}
     </List>
   );
 };

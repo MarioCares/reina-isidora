@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import { compare } from "bcrypt";
+import { Role } from "@/nextauth";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -42,7 +43,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role,
+          role: user.role as Role,
           randomKey: "cruzverde",
         };
       },
@@ -65,7 +66,7 @@ export const authOptions: NextAuthOptions = {
         const u = user as unknown as {
           id: number;
           randomKey: string;
-          role: string;
+          role: Role;
         };
         return {
           ...token,

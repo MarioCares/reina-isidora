@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IRegister } from "@/interfaces/IRegister";
+import { IRegister } from "@/interfaces/model/IRegister";
 import { UserService } from "@/services/UsersService";
 import { getErrorMessage } from "@/utils/Errors";
 

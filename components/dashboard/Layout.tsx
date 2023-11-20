@@ -5,8 +5,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import AppBarDrawer from "@/components/dashboard/AppBarDrawer";
 import Toolbar from "@mui/material/Toolbar";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { Role } from "@/nextauth";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({
+  children,
+  role,
+}: {
+  children: React.ReactNode;
+  role?: Role;
+}) => {
   const [isBackdropOpen, setIsBackdropOpen] = useState<boolean>(false);
 
   const handleBackdrop = () => setIsBackdropOpen(!isBackdropOpen);
@@ -15,7 +22,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBarDrawer showBackdrop={handleBackdrop} />
+        <AppBarDrawer role={role} showBackdrop={handleBackdrop} />
         <Box
           component="main"
           sx={{

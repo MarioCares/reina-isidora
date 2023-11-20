@@ -1,9 +1,9 @@
 import { Client } from "@/utils/Client";
-import { ICommonExpenseDebt } from "@/interfaces/SaveCommonExpensesDebt";
+import { ICommonExpenseDebt } from "@/interfaces/model/SaveCommonExpensesDebt";
 
-const Save = (data: ICommonExpenseDebt) =>
+const Save = (data: ICommonExpenseDebt, isNew: boolean) =>
   Client("/api/common-expense-debt", {
-    method: "POST",
+    method: isNew ? "POST" : "PUT",
     body: data,
     headers: {},
   });

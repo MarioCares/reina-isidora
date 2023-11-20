@@ -7,8 +7,9 @@ import {
   TcommonExpensesByYear,
 } from "@/utils/constants/querys/CommonExpenses";
 import CommonExpensesGrid from "@/components/income/commonExpenses/CommonExpensesGrid";
+import { prisma } from "@/lib/prisma";
 
-export const revalidate: number = 10;
+export const revalidate: number = 0;
 
 export default async function CommonExpensesYearlyPage({
   params,
@@ -19,13 +20,34 @@ export default async function CommonExpensesYearlyPage({
   if (!session) {
     redirect("/login");
   } else {
-    const apartments: TcommonExpensesByYear[] =
+    const commonExpensesByYear: TcommonExpensesByYear[] =
       await CommonExpenses.getCommonExpensesByYear(params.year);
-    console.log("apartments", apartments);
+    const commonExpensesDebtByYear =
+      await CommonExpenses.getCommonExpensesDebtByYear(Number(params.year));
+
+    const withTotals = commonExpensesByYear.map(
+      (apartment: TcommonExpensesByYear) => {
+        return {
+          ...apartment,
+          totalPay: Object.keys(apartment).reduce((suma, key) => {
+            if (key !== "number") {
+              suma += Number(apartment[key]) ?? 0;
+            }
+            return suma;
+          }, 0),
+          totalDebt: commonExpensesDebtByYear.find(
+            (tmp: { [key: string]: number }) => tmp.number === apartment.number,
+          )!["total"],
+        };
+      },
+    );
 
     return (
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <CommonExpensesGrid />
+        <CommonExpensesGrid
+          year={params.year}
+          commonExpensesByYear={withTotals}
+        />
       </Container>
     );
   }

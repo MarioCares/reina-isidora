@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import CommonExpensesDebtStart from "@/components/commonExpensesDebt/CommonExpensesDebtStart";
+import { IDebt } from "@/interfaces/model/IDebt";
 
 export const revalidate: number = 10;
 
@@ -21,7 +22,7 @@ export default async function CommonExpensesDebtYearApartmentPage({
         number: Number(params.apartment),
       },
     });
-    const debt = await prisma.commonExpensesDebt.findFirst({
+    const debt: IDebt[] | null = await prisma.commonExpensesDebt.findMany({
       where: {
         year: Number(params.year),
         apartmentId: apartment ? apartment.id : 0,
@@ -30,14 +31,11 @@ export default async function CommonExpensesDebtYearApartmentPage({
 
     return (
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        {debt ? (
-          <h1>Iniciamos año</h1>
-        ) : (
-          <CommonExpensesDebtStart
-            year={params.year}
-            number={params.apartment}
-          />
-        )}
+        <CommonExpensesDebtStart
+          year={params.year}
+          number={params.apartment}
+          debt={debt}
+        />
       </Container>
     );
   }

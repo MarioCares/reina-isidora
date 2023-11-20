@@ -19,7 +19,13 @@ import { usePathname } from "next/navigation";
 import { getPagenameByPath } from "@/utils/Pages";
 import { MenuItems } from "@/components/dashboard/MenuItems";
 
-const AppBarDrawer = ({ showBackdrop }: { showBackdrop: () => void }) => {
+const AppBarDrawer = ({
+  showBackdrop,
+  role,
+}: {
+  showBackdrop: () => void;
+  role?: string;
+}) => {
   const settings = ["Profile", "Account", "Dashboard"];
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState<boolean>(false);
@@ -126,7 +132,7 @@ const AppBarDrawer = ({ showBackdrop }: { showBackdrop: () => void }) => {
           </IconButton>
         </Toolbar>
         <Divider />
-        <MenuItems />
+        <MenuItems role={role} />
       </DrawerStyled>
     </>
   );

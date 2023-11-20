@@ -1,5 +1,5 @@
 import { Client } from "@/utils/Client";
-import { IApartmentUpsert } from "@/interfaces/IApartmentUpsert";
+import { IApartmentUpsert } from "@/interfaces/model/IApartmentUpsert";
 
 const Upsert = (data: IApartmentUpsert) =>
   Client("/api/apartment/upsert", {

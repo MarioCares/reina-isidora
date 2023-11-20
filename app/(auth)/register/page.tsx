@@ -2,7 +2,7 @@
 import { FormEvent, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import useRegister from "@/hooks/useRegister";
-import { IRegister } from "@/interfaces/IRegister";
+import { IRegister } from "@/interfaces/model/IRegister";
 import {
   Alert,
   Avatar,

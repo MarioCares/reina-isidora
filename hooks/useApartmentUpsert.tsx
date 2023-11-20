@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IApartmentUpsert } from "@/interfaces/IApartmentUpsert";
+import { IApartmentUpsert } from "@/interfaces/model/IApartmentUpsert";
 import { ApartmentService } from "@/services/ApartmentService";
 import { getErrorMessage } from "@/utils/Errors";
 

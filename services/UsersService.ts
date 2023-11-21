@@ -1,4 +1,4 @@
-import { Client } from "@/utils/Client";
+import { Client, ClientData } from "@/utils/Client";
 import { IRegister } from "@/interfaces/model/IRegister";
 
 const Register = (data: IRegister) =>
@@ -8,6 +8,9 @@ const Register = (data: IRegister) =>
     headers: {},
   });
 
+const GetByRole = (role: string) => ClientData(`/api/users/${role}`);
+
 export const UserService = {
   Register,
+  GetByRole,
 };

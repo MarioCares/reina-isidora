@@ -13,5 +13,9 @@ export async function GET(
       role,
     },
   });
-  return NextResponse.json(users);
+  const cleanUsers = users.map((user) => ({
+    ...user,
+    password: "",
+  }));
+  return NextResponse.json(cleanUsers);
 }

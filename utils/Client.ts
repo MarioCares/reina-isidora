@@ -22,3 +22,18 @@ export const Client = (url: string, params: IClient) =>
         throw new Error(error.response.data.message);
       }
     });
+
+export const ClientData = (url: string) =>
+  axios({
+    method: "GET",
+    url,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.data)
+    .catch((error: AxiosError<Error>) => {
+      if (error.response) {
+        throw new Error(error.response.data.message);
+      }
+    });

@@ -75,9 +75,9 @@ const CommonExpensesGrid = ({
     <DataGrid
       autoHeight={true}
       initialState={{
-        pagination: { paginationModel: { pageSize: 10 } },
+        pagination: { paginationModel: { pageSize: 25 } },
       }}
-      pageSizeOptions={[10, 25, 50, 100]}
+      pageSizeOptions={[25, 50, 100]}
       getRowId={(row) => row.number}
       rows={rows}
       columns={columns}
